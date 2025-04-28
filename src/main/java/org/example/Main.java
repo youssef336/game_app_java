@@ -6,7 +6,7 @@ public class Main {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             // Test database connection first
-            DCconnection.testConnection();
+
 
             // Launch application
             MainFrame frame = new MainFrame();

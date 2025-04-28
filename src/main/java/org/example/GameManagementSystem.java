@@ -27,13 +27,10 @@ public class GameManagementSystem extends JFrame {
         tabbedPane.addTab("Search Game", createSearchGamePanel());
 
         // Add test button
-        JButton testButton = new JButton("Test Connection");
-        testButton.addActionListener(e -> DCconnection.testConnection());
-        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        bottomPanel.add(testButton);
+
 
         add(tabbedPane, BorderLayout.CENTER);
-        add(bottomPanel, BorderLayout.SOUTH);
+
     }
 
     private JPanel createAddGamePanel() {

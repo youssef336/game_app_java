@@ -5,6 +5,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
 
+import static org.example.Helper.*;
+
 public class RegisterPanel extends JPanel {
     private final JTextField usernameField;
     private final JTextField emailField;
@@ -20,24 +22,24 @@ public class RegisterPanel extends JPanel {
         gbc.anchor = GridBagConstraints.WEST;
 
         // Username
-        addLabel("Username:", gbc, 0);
+        Helper.addLabel(this,"Username:", gbc, 0);
         usernameField = new JTextField(20);
-        addField(usernameField, gbc, 1, 0);
+        Helper.addField (this, usernameField, gbc, 1, 0);
 
         // Email
-        addLabel("Email:", gbc, 1);
+        Helper.addLabel(this,"Email:", gbc, 1);
         emailField = new JTextField(20);
-        addField(emailField, gbc, 1, 1);
+        Helper.addField(this, emailField, gbc, 1, 1);
 
         // Password
-        addLabel("Password:", gbc, 2);
+        Helper.addLabel(this,"Password:", gbc, 2);
         passwordField = new JPasswordField(20);
-        addField(passwordField, gbc, 1, 2);
+        Helper.addField(this, passwordField, gbc, 1, 2);
 
         // Confirm Password
-        addLabel("Confirm Password:", gbc, 3);
+        Helper.addLabel(this,"Confirm Password:", gbc, 3);
         confirmPasswordField = new JPasswordField(20);
-        addField(confirmPasswordField, gbc, 1, 3);
+        Helper.addField(this, confirmPasswordField, gbc, 1, 3);
 
         // Buttons
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
@@ -61,17 +63,17 @@ public class RegisterPanel extends JPanel {
         String confirmPassword = new String(confirmPasswordField.getPassword()).trim();
 
         if (username.isEmpty() || email.isEmpty() || password.isEmpty()) {
-            showError("Please fill in all fields");
+            Helper.showError(this,"Please fill in all fields");
             return;
         }
 
         if (!password.equals(confirmPassword)) {
-            showError("Passwords do not match");
+            Helper.showError(this,"Passwords do not match");
             return;
         }
 
         if (password.length() < 6) {
-            showError("Password must be at least 6 characters");
+            Helper.showError(this,"Password must be at least 6 characters");
             return;
         }
 
@@ -86,7 +88,7 @@ public class RegisterPanel extends JPanel {
                     if (rs.next()) {
                         String conflict = rs.getString("username").equals(username) ?
                                 "Username" : "Email";
-                        showError(conflict + " already exists");
+                        Helper.showError(this,conflict + " already exists");
                         return;
                     }
                 }
@@ -108,36 +110,10 @@ public class RegisterPanel extends JPanel {
                 }
             }
         } catch (SQLException ex) {
-            showError("Database error: " + ex.getMessage());
+            Helper.showError(this,"Database error: " + ex.getMessage());
             ex.printStackTrace();
         }
     }
 
-    // Helper methods (same as LoginPanel)
-    private void addLabel(String text, GridBagConstraints gbc, int row) {
-        gbc.gridx = 0;
-        gbc.gridy = row;
-        add(new JLabel(text), gbc);
-    }
 
-    private void addField(JComponent component, GridBagConstraints gbc, int x, int y) {
-        gbc.gridx = x;
-        gbc.gridy = y;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        add(component, gbc);
-    }
-
-    private JButton createButton(String text, Color bgColor, ActionListener listener) {
-        JButton button = new JButton(text);
-        button.setBackground(bgColor);
-        button.setForeground(Color.WHITE);
-        button.setFocusPainted(false);
-        button.setPreferredSize(new Dimension(120, 30));
-        button.addActionListener(listener);
-        return button;
-    }
-
-    private void showError(String message) {
-        JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
-    }
 }

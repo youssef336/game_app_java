@@ -23,24 +23,4 @@ public class DCconnection {
             throw e;
         }
     }
-
-    public static void testConnection() {
-        System.out.println("Testing database connection...");
-        try (Connection conn = connect()) {
-            DatabaseMetaData meta = conn.getMetaData();
-            System.out.println("Connected to: " + meta.getDatabaseProductName() +
-                    " " + meta.getDatabaseProductVersion());
-
-            try (Statement stmt = conn.createStatement();
-                 ResultSet rs = stmt.executeQuery("SHOW TABLES")) {
-                System.out.println("Tables in database:");
-                while (rs.next()) {
-                    System.out.println("- " + rs.getString(1));
-                }
-            }
-        } catch (SQLException ex) {
-            System.err.println("Connection test failed:");
-            ex.printStackTrace();
-        }
-    }
 }
